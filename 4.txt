@@ -1,0 +1,268 @@
+Assignment 4   (Lemmatization):
+
+
+
+Code:
+
+
+import nltk
+
+# Download the 'wordnet' resource
+nltk.download('wordnet')
+
+# import these modules
+from nltk.stem import WordNetLemmatizer
+
+lemmatizer = WordNetLemmatizer()
+
+def lemmatize_word(word, pos=None):
+    if pos:
+        return lemmatizer.lemmatize(word, pos=pos)
+    else:
+        return lemmatizer.lemmatize(word)
+
+
+while True:
+        # Display the menu
+        print("\n--- Lemmatizer Menu ---")
+        print("1. Lemmatize a word without POS tag")
+        print("2. Lemmatize a word with POS tag (adjective)")
+        print("3. Lemmatize a word with POS tag (verb)")
+        print("4. Exit")
+
+        choice = input("Enter your choice (1/2/3/4): ")
+
+        if choice == '1':
+            word = input("Enter the word to lemmatize: ")
+            print(f"Lemmatized word: {lemmatize_word(word)}")
+
+        elif choice == '2':
+            word = input("Enter the word to lemmatize: ")
+            print(f"Lemmatized word (as adjective): {lemmatize_word(word, pos='a')}")
+
+        elif choice == '3':
+            word = input("Enter the word to lemmatize: ")
+            print(f"Lemmatized word (as verb): {lemmatize_word(word, pos='v')}")
+
+        elif choice == '4':
+            print("Exiting...")
+            break
+
+        else:
+            print("Invalid choice, please try again.")
+
+
+
+
+
+Explanation:
+
+
+
+---
+
+## ✅ **Concept: What is Lemmatization?**
+
+### ➡️ **Lemmatization**:
+- It's the process of reducing a word to its **base or dictionary form**, called the **lemma**.
+- Unlike **stemming**, lemmatization returns **valid words** that you can find in a dictionary.
+
+| Example            | Lemmatization (Noun/Verb/Adjective) |
+|--------------------|-------------------------------------|
+| running            | run (verb)                         |
+| better (adjective) | good                               |
+| studies            | study (noun)                       |
+
+### ➡️ **Difference Between Lemmatization and Stemming**
+| **Aspect**      | **Stemming**                   | **Lemmatization**                 |
+|-----------------|--------------------------------|----------------------------------|
+| Reduces to      | Root form (can be non-word)    | Base form (valid dictionary word)|
+| Example         | "running" → "run" / "runn"     | "running" → "run"                |
+| Language-aware? | No                             | Yes                              |
+| Uses POS?       | No                             | Yes (optional but improves accuracy) |
+| Accuracy        | Less accurate, faster          | More accurate, needs resources   |
+
+---
+
+## ✅ **About WordNet Lemmatizer**
+- `WordNetLemmatizer` from **NLTK** uses the **WordNet lexical database**.
+- It can **lemmatize** based on **Part of Speech (POS)**:
+  - `'n'`: noun
+  - `'v'`: verb
+  - `'a'`: adjective
+  - `'r'`: adverb
+- Without POS, it **defaults to noun** lemmatization.
+
+---
+
+## ✅ **Code Explanation**
+```python
+import nltk
+```
+- Imports the **Natural Language Toolkit**.
+
+---
+
+```python
+# Download the 'wordnet' resource
+nltk.download('wordnet')
+```
+- Downloads **WordNet**, the lexical database NLTK uses for **lemmatization**.
+- WordNet includes **synonyms**, **hypernyms**, and **lemmas** for English words.
+
+---
+
+```python
+# import these modules
+from nltk.stem import WordNetLemmatizer
+```
+- Imports the **WordNetLemmatizer** class.
+
+---
+
+```python
+lemmatizer = WordNetLemmatizer()
+```
+- Creates an instance of the lemmatizer, which you'll use to perform the **lemmatization**.
+
+---
+
+### ✅ `lemmatize_word()` function
+```python
+def lemmatize_word(word, pos=None):
+    if pos:
+        return lemmatizer.lemmatize(word, pos=pos)
+    else:
+        return lemmatizer.lemmatize(word)
+```
+- Takes a **word** and an optional **POS tag**.
+- If `pos` is given, it performs **POS-based lemmatization**, improving accuracy.
+- If `pos` is **not provided**, it defaults to **noun lemmatization**.
+
+#### Example:
+```python
+lemmatize_word("better", pos='a')  # returns 'good'
+lemmatize_word("running", pos='v') # returns 'run'
+```
+
+---
+
+### ✅ `main()` function (interactive menu)
+```python
+def main():
+    while True:
+        # Display the menu
+        print("\n--- Lemmatizer Menu ---")
+        print("1. Lemmatize a word without POS tag")
+        print("2. Lemmatize a word with POS tag (adjective)")
+        print("3. Lemmatize a word with POS tag (verb)")
+        print("4. Exit")
+```
+- This creates a **loop** that continuously shows the menu and accepts user input.
+  
+---
+
+### ✅ Menu choices
+```python
+        choice = input("Enter your choice (1/2/3/4): ")
+```
+- Asks the user to select an option.
+
+#### ➡️ **Choice 1** (No POS tag)
+```python
+        if choice == '1':
+            word = input("Enter the word to lemmatize: ")
+            print(f"Lemmatized word: {lemmatize_word(word)}")
+```
+- Lemmatizes the word without a **POS tag** (defaults to noun).
+  
+#### ➡️ **Choice 2** (Adjective)
+```python
+        elif choice == '2':
+            word = input("Enter the word to lemmatize: ")
+            print(f"Lemmatized word (as adjective): {lemmatize_word(word, pos='a')}")
+```
+- Lemmatizes the word **as an adjective** (`pos='a'`).
+
+#### ➡️ **Choice 3** (Verb)
+```python
+        elif choice == '3':
+            word = input("Enter the word to lemmatize: ")
+            print(f"Lemmatized word (as verb): {lemmatize_word(word, pos='v')}")
+```
+- Lemmatizes the word **as a verb** (`pos='v'`).
+
+#### ➡️ **Exit option**
+```python
+        elif choice == '4':
+            print("Exiting...")
+            break
+```
+- Exits the program if the user enters **4**.
+
+#### ➡️ **Invalid input**
+```python
+        else:
+            print("Invalid choice, please try again.")
+```
+- Prompts the user to re-enter a valid option.
+
+---
+
+### ✅ `if __name__ == "__main__":`
+```python
+if __name__ == "__main__":
+    main()
+```
+- Ensures the `main()` function runs when you **execute** the script.
+
+---
+
+## ✅ **Sample Run**
+```
+--- Lemmatizer Menu ---
+1. Lemmatize a word without POS tag
+2. Lemmatize a word with POS tag (adjective)
+3. Lemmatize a word with POS tag (verb)
+4. Exit
+Enter your choice (1/2/3/4): 1
+Enter the word to lemmatize: studies
+Lemmatized word: study
+
+--- Lemmatizer Menu ---
+Enter your choice (1/2/3/4): 3
+Enter the word to lemmatize: running
+Lemmatized word (as verb): run
+```
+
+---
+
+## ✅ **POS Tags in WordNetLemmatizer**
+- `'n'`: Noun
+- `'v'`: Verb
+- `'a'`: Adjective
+- `'r'`: Adverb
+
+---
+
+## ✅ **Summary Table**
+| **Element**                | **Explanation**                                           |
+|----------------------------|-----------------------------------------------------------|
+| **Lemmatization**          | Reduces word to its **lemma** (base form).                |
+| **WordNetLemmatizer**      | NLTK tool for lemmatizing using **WordNet** database.     |
+| **POS Tagging in Lemmatizer** | Helps identify the correct **base form**.                 |
+| **Stemming vs Lemmatization** | Stemming is fast but inaccurate; lemmatization is slower but accurate. |
+| **This Code**              | Interactive menu to **lemmatize** a word with/without POS.|
+
+---
+
+## ✅ **When to Use Lemmatization?**
+- Text **preprocessing** for NLP tasks:
+  - Information retrieval
+  - Chatbots
+  - Sentiment analysis
+  - Text classification
+
+---
+
+

@@ -1,0 +1,154 @@
+Assignment 1    (language detection):
+
+Code:
+
+import pandas as pd
+from langdetect import detect, DetectorFactory, LangDetectException
+import nltk
+from nltk.tokenize import word_tokenize, sent_tokenize
+
+nltk.download('punkt')                 #downloads the punctuation data needed for word and sentence tokenization.
+nltk.download('punkt_tab')
+DetectorFactory.seed = 0               #ensures language detection gives the same results each time
+
+df = pd.read_csv('Language Detection.csv')
+
+# Safe language detection
+def safe_detect(text):
+    try:
+        return detect(str(text))
+    except LangDetectException:
+        return 'unknown'
+
+df['language'] = df['Text'].apply(safe_detect)
+df['word_count'] = df['Text'].apply(lambda x: len(word_tokenize(str(x))))
+df['sentence_count'] = df['Text'].apply(lambda x: len(sent_tokenize(str(x))))
+df['word_tokens'] = df['Text'].apply(lambda x: word_tokenize(str(x)))
+df['sentence_tokens'] = df['Text'].apply(lambda x: sent_tokenize(str(x)))
+
+print(df)
+
+
+
+
+
+
+
+
+
+Explanation:
+
+
+
+Here's a **clear and easy-to-remember explanation** of your code, line by line:
+
+---
+
+### 📚 **1. Importing Libraries**
+
+```python
+import pandas as pd
+from langdetect import detect, DetectorFactory, LangDetectException
+import nltk
+from nltk.tokenize import word_tokenize, sent_tokenize
+```
+- `pandas`: For reading and handling CSV data.
+- `langdetect`: For detecting the language of text.
+  - `detect`: Main function for language detection.
+  - `DetectorFactory`: Used to make language detection consistent.
+  - `LangDetectException`: Catches errors when detection fails.
+- `nltk`: Natural Language Toolkit.
+  - `word_tokenize`: Splits text into words.
+  - `sent_tokenize`: Splits text into sentences.
+
+---
+
+### ⬇️ **2. Download NLTK Tokenizer**
+
+```python
+nltk.download('punkt')
+```
+Downloads punctuation data needed for sentence and word tokenization.
+
+---
+
+### 🔒 **3. Fix Randomness in Detection**
+
+```python
+DetectorFactory.seed = 0
+```
+Makes language detection give the **same results every time** (important for reproducibility).
+
+---
+
+### 📂 **4. Load Dataset**
+
+```python
+df = pd.read_csv('/content/Language Detection.csv')
+```
+Reads the CSV file into a pandas DataFrame. The file should have a column named `'Text'`.
+
+---
+
+### 🔍 **5. Define Safe Language Detection Function**
+
+```python
+def safe_detect(text):
+    try:
+        return detect(str(text))
+    except LangDetectException:
+        return 'unknown'
+```
+- Converts the input to string.
+- Uses `detect()` to find the language.
+- If detection fails (e.g. empty or weird text), returns `'unknown'`.
+
+---
+
+### 🧠 **6. Apply Processing to Each Text Row**
+
+```python
+df['language'] = df['Text'].apply(safe_detect)
+```
+Detects and stores the **language** of each text.
+
+```python
+df['word_count'] = df['Text'].apply(lambda x: len(word_tokenize(str(x))))
+```
+Counts and stores the **number of words**.
+
+```python
+df['sentence_count'] = df['Text'].apply(lambda x: len(sent_tokenize(str(x))))
+```
+Counts and stores the **number of sentences**.
+
+```python
+df['word_tokens'] = df['Text'].apply(lambda x: word_tokenize(str(x)))
+```
+Stores the **list of word tokens**.
+
+```python
+df['sentence_tokens'] = df['Text'].apply(lambda x: sent_tokenize(str(x)))
+```
+Stores the **list of sentence tokens**.
+
+---
+
+### 🖨️ **7. Show the Final DataFrame**
+
+```python
+print(df)
+```
+Prints the updated DataFrame with all the new columns.
+
+---
+
+### ✅ Summary:
+This script:
+- Reads a text dataset,
+- Detects the language of each text,
+- Counts words and sentences,
+- Tokenizes the text,
+- And handles errors safely and simply.
+
+

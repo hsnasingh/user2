@@ -1,0 +1,148 @@
+Assignment 3   (POS tagging):
+
+
+
+Code:
+
+
+import nltk 
+from nltk import pos_tag 
+
+nltk.download("averaged_perceptron_tagger_eng") 
+
+while True: 
+    print("1. POS Tagging of sentence") 
+    print("2. Exit") 
+    ch = int(input("Enter your choice: ")) 
+    
+    if ch == 1: 
+        text = input("Enter the sentence you wish: ") 
+        words = text.split() 
+        pos_tags = pos_tag(words) 
+        print("Original Text:") 
+        print(text) 
+        print("\nPOS Tagging Result:") 
+        for word, tag in pos_tags: 
+            print(f"{word}: {tag}") 
+    
+    elif ch == 2: 
+        print("Exitttt") 
+        break
+
+
+
+
+
+
+
+
+
+
+
+
+Explanation:
+
+
+Sure! Let me explain both the **concept** and **code** for your `POS Tagging` program in a simple and practical-exam-friendly way.
+
+---
+
+### 🔍 **Concept: POS Tagging**
+
+**POS Tagging** stands for **Part-of-Speech Tagging**. It means labeling each word in a sentence with its grammatical role, like:
+- **NN** – Noun  
+- **VB** – Verb  
+- **JJ** – Adjective  
+- **RB** – Adverb  
+- etc.
+
+This helps in understanding sentence structure and is useful in **Natural Language Processing (NLP)** tasks like text analysis, translation, sentiment analysis, etc.
+
+---
+
+### ✅ **Code Explanation (Line by Line)**
+
+```python
+import nltk 
+from nltk import pos_tag 
+```
+- Importing NLTK (Natural Language Toolkit) and the `pos_tag()` function to perform POS tagging.
+
+```python
+nltk.download("averaged_perceptron_tagger_eng") 
+```
+- Downloads the model (a trained algorithm) used for tagging words with their correct POS labels.
+
+---
+
+### 💡 **Menu-Driven Part**
+
+```python
+while True: 
+    print("1. POS Tagging of sentence") 
+    print("2. Exit") 
+    ch = int(input("Enter your choice: ")) 
+```
+- Starts an infinite loop with a simple menu to let the user choose to tag or exit.
+
+---
+
+### 🏷️ **Option 1: POS Tagging**
+
+```python
+    if ch == 1: 
+        text = input("Enter the sentence you wish: ") 
+        words = text.split() 
+        pos_tags = pos_tag(words) 
+```
+- Takes input sentence from the user.
+- Splits the sentence into words.
+- Tags each word using `pos_tag()`.
+
+```python
+        print("Original Text:") 
+        print(text) 
+        print("\nPOS Tagging Result:") 
+        for word, tag in pos_tags: 
+            print(f"{word}: {tag}") 
+```
+- Prints original sentence and the word-tag pairs neatly.
+
+---
+
+### 🛑 **Option 2: Exit**
+
+```python
+    elif ch == 2: 
+        print("Exitttt") 
+        break
+```
+- If the user selects option 2, the loop ends and program exits.
+
+---
+
+### 📌 Sample Output:
+```
+Enter your choice: 1
+Enter the sentence you wish: I love programming
+Original Text:
+I love programming
+
+POS Tagging Result:
+I: PRP
+love: VBP
+programming: VBG
+```
+
+---
+
+### 🧠 Summary:
+
+| Part | Meaning |
+|------|---------|
+| `PRP` | Pronoun |
+| `VBP` | Verb, present tense |
+| `VBG` | Verb, gerund/present participle |
+
+This code is **simple**, uses only `split()` and `pos_tag()`, and perfect for **practical exams**.
+

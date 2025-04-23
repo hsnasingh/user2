@@ -1,0 +1,347 @@
+Assignment 5:
+
+
+
+Code:
+
+
+import nltk
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from collections import Counter
+
+nltk.download('vader_lexicon')
+
+
+analyzer = SentimentIntensityAnalyzer()
+# Emotion keywords
+emotion_words = {
+    'anger': ['angry', 'mad', 'rage'],
+    'joy': ['happy', 'joyful', 'excited'],
+    'sadness': ['sad', 'unhappy', 'depressed'],
+    'fear': ['scared', 'afraid', 'terrified'],
+    'surprise': ['surprised', 'shocked', 'amazed'],
+    'disgust': ['disgusted', 'gross']
+}
+
+# Get sentiment using VADER
+def get_sentiment(text):
+    score = analyzer.polarity_scores(text)['compound']
+    if score >= 0.05:
+        return 'Positive'
+    elif score <= -0.05:
+        return 'Negative'
+    else:
+        return 'Neutral'
+
+# Get emotion based on keywords (simple .split())
+def get_emotion(text):
+    words = text.lower().split()
+    scores = {e: sum(words.count(w) for w in kws) for e, kws in emotion_words.items()}
+    return max(scores, key=scores.get) if max(scores.values()) > 0 else 'Neutral'
+
+# Main menu function
+def start_analyzer():
+    print("Sentiment & Emotion Analyzer")
+    print("1. Sentiment\n2. Emotion\n3. Both\n4. Exit")
+
+    while True:
+        choice = input("\nChoose an option (1-4): ")
+
+        if choice == '1':
+            text = input("Enter text: ")
+            print("Sentiment:", get_sentiment(text))
+
+        elif choice == '2':
+            text = input("Enter text: ")
+            print("Emotion:", get_emotion(text))
+
+        elif choice == '3':
+            text = input("Enter text: ")
+            print("Sentiment:", get_sentiment(text))
+            print("Emotion:", get_emotion(text))
+
+        elif choice == '4':
+            print("Goodbye!")
+            break
+
+        else:
+            print("Invalid choice. Try again.")
+
+# Run the app
+start_analyzer()
+
+
+
+
+
+
+
+
+
+Explanation:
+
+
+
+
+### ✅ Concept & Code Explanation  
+---
+
+## ✅ **Concept Overview**  
+
+This program performs **Sentiment Analysis** and **Emotion Detection** on a given text. It's a **menu-driven Python application** using **NLTK** resources like **VADER** and **Punkt tokenizer**.
+
+---
+
+### ➡️ **Sentiment Analysis**
+- **Sentiment Analysis** detects the **opinion** expressed in a text:
+  - **Positive**
+  - **Negative**
+  - **Neutral**
+  
+- This program uses **VADER (Valence Aware Dictionary and sEntiment Reasoner)**:
+  - A **lexicon and rule-based** sentiment analysis tool.
+  - Suitable for **social media text**, reviews, and short sentences.
+  
+#### ➡️ VADER gives:
+- `pos`: positive score
+- `neu`: neutral score
+- `neg`: negative score
+- `compound`: the **normalized**, weighted sum of all the scores.
+  - Positive if `compound >= 0.05`
+  - Negative if `compound <= -0.05`
+  - Neutral otherwise
+
+---
+
+### ➡️ **Emotion Detection**
+- **Emotion Detection** identifies emotions like:
+  - Anger, Joy, Sadness, Fear, Surprise, Disgust.
+  
+- This program uses **keyword-based detection**:
+  - A **basic emotion dictionary** maps emotions to lists of related words.
+  - The text is **tokenized**, and word **frequency is counted**.
+  - It finds which emotion has the **most matched keywords** in the text.
+
+---
+
+## ✅ **Code Explanation**  
+---
+
+```python
+import nltk
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from nltk.tokenize import word_tokenize
+from collections import Counter
+```
+- Import necessary libraries:
+  - **NLTK** for NLP tools.
+  - **SentimentIntensityAnalyzer** for VADER-based sentiment analysis.
+  - **word_tokenize** for splitting text into words.
+  - **Counter** for counting word occurrences.
+
+---
+
+```python
+# Download required resources
+nltk.download('punkt')
+nltk.download('vader_lexicon')
+nltk.download('punkt_tab')
+```
+- Downloads:
+  - `punkt`: tokenizer model.
+  - `vader_lexicon`: VADER sentiment data.
+  - `punkt_tab`: optional data (may not be required).
+
+---
+
+```python
+# Initialize SentimentIntensityAnalyzer
+sia = SentimentIntensityAnalyzer()
+```
+- Initializes the **VADER analyzer** to use for **sentiment analysis**.
+
+---
+
+```python
+# Basic emotion dictionary
+emotion_dict = {
+    'anger': ['angry', 'mad', 'rage'],
+    'joy': ['happy', 'joyful', 'excited'],
+    'sadness': ['sad', 'unhappy', 'depressed'],
+    'fear': ['scared', 'afraid', 'terrified'],
+    'surprise': ['surprised', 'shocked', 'amazed'],
+    'disgust': ['disgusted', 'gross']
+}
+```
+- A **manual dictionary** for mapping emotions to **relevant keywords**.
+- Used in **emotion detection**, where a match indicates the presence of an emotion.
+
+---
+
+### ✅ **Sentiment Analysis Function**
+```python
+def analyze_sentiment(text):
+    sentiment_scores = sia.polarity_scores(text)
+    return 'POSITIVE' if sentiment_scores['compound'] >= 0.05 else ('NEGATIVE' if sentiment_scores['compound'] <= -0.05 else 'NEUTRAL')
+```
+- Takes **text input** and uses **VADER** to get **sentiment scores**.
+- Evaluates the `compound` score:
+  - **>= 0.05** → POSITIVE
+  - **<= -0.05** → NEGATIVE
+  - Otherwise → NEUTRAL
+
+---
+
+### ✅ **Emotion Detection Function**
+```python
+def analyze_emotion(text):
+    words = word_tokenize(text.lower())  # convert text to lowercase and tokenize
+    word_counts = Counter(words)         # count word frequencies
+    emotion_scores = {
+        emotion: sum(word_counts[key] for key in keywords)
+        for emotion, keywords in emotion_dict.items()
+    }
+    return max(emotion_scores, key=emotion_scores.get) if max(emotion_scores.values()) > 0 else 'Neutral'
+```
+- Converts text to **lowercase**, then **tokenizes** it.
+- Counts how many times each word appears using `Counter`.
+- For each emotion:
+  - Checks how many times its **keywords** appear.
+- Returns the emotion with the **highest** score.
+- If no emotion words are found → returns `'Neutral'`.
+
+---
+
+### ✅ **Analyze Both**
+```python
+def analyze_text(text):
+    sentiment = analyze_sentiment(text)
+    emotion = analyze_emotion(text)
+    return sentiment, emotion
+```
+- Combines **both sentiment and emotion analysis**.
+- Returns both results together.
+
+---
+
+### ✅ **Menu Function**
+```python
+def menu():
+    print("\nWelcome to Sentiment and Emotion Analyzer")
+    print("1. Analyze Sentiment")
+    print("2. Analyze Emotion")
+    print("3. Analyze Both Sentiment and Emotion")
+    print("4. Exit")
+
+    while True:
+        choice = input("\nEnter your choice (1/2/3/4): ")
+```
+- Prints the **menu options**.
+- Asks the user to **choose an option**.
+
+---
+
+### ✅ **Menu Options**
+#### ➡️ Option 1 - Sentiment Analysis
+```python
+        if choice == '1':
+            text = input("\nEnter text to analyze sentiment: ")
+            sentiment = analyze_sentiment(text)
+            print(f"Sentiment: {sentiment}")
+```
+
+#### ➡️ Option 2 - Emotion Detection
+```python
+        elif choice == '2':
+            text = input("\nEnter text to analyze emotion: ")
+            emotion = analyze_emotion(text)
+            print(f"Emotion: {emotion}")
+```
+
+#### ➡️ Option 3 - Both Sentiment & Emotion
+```python
+        elif choice == '3':
+            text = input("\nEnter text to analyze both sentiment and emotion: ")
+            sentiment, emotion = analyze_text(text)
+            print(f"Sentiment: {sentiment}, Emotion: {emotion}")
+```
+
+#### ➡️ Exit
+```python
+        elif choice == '4':
+            print("Exiting the program. Goodbye!")
+            break
+```
+
+#### ➡️ Invalid Input
+```python
+        else:
+            print("Invalid choice. Please select a valid option.")
+```
+
+---
+
+### ✅ Run the Program
+```python
+if __name__ == "__main__":
+    menu()
+```
+- Starts the **menu-driven program** when the script runs.
+
+---
+
+## ✅ Example Run
+```
+Welcome to Sentiment and Emotion Analyzer
+1. Analyze Sentiment
+2. Analyze Emotion
+3. Analyze Both Sentiment and Emotion
+4. Exit
+
+Enter your choice (1/2/3/4): 1
+
+Enter text to analyze sentiment: I am so happy and excited about the trip!
+Sentiment: POSITIVE
+```
+
+```
+Enter your choice (1/2/3/4): 2
+
+Enter text to analyze emotion: I feel very sad and unhappy today.
+Emotion: sadness
+```
+
+```
+Enter your choice (1/2/3/4): 3
+
+Enter text to analyze both sentiment and emotion: I am scared and terrified.
+Sentiment: NEGATIVE, Emotion: fear
+```
+
+---
+
+## ✅ Summary Table
+
+| **Concept**                 | **Explanation**                                                        |
+|-----------------------------|------------------------------------------------------------------------|
+| **Sentiment Analysis**      | Detects positive, negative, or neutral sentiment in text.              |
+| **VADER**                   | Rule-based tool optimized for social media sentiment analysis.         |
+| **Emotion Detection**       | Identifies emotional state using keywords and word counts.             |
+| **Menu-Driven Code**        | User-friendly CLI interface to select different text analysis options. |
+| **Tokenization**            | Splits text into individual words for processing.                      |
+| **Counter**                 | Counts word occurrences in the text for emotion detection.             |
+
+---
+
+## ✅ Advantages
+✔ Easy to use and understand.  
+✔ Good starting point for **Sentiment & Emotion Analysis**.  
+✔ Uses **VADER**, which is great for **short and informal text**.
+
+## ✅ Limitations
+❗ Emotion detection is **keyword-based**, not machine-learned.  
+❗ Works only on **basic** emotion categories.
+
+---
+
+

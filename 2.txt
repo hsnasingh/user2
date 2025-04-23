@@ -1,0 +1,204 @@
+Assignment 2     (Stemming):
+
+
+Code:
+
+#for sentence input
+
+import nltk
+from nltk.stem import SnowballStemmer
+from nltk.tokenize import word_tokenize
+
+# Download necessary NLTK resources
+nltk.download('punkt')
+nltk.download('punkt_tab') # Download the punkt_tab resource
+
+# Create an instance of the SnowballStemmer for German
+stemmer = SnowballStemmer("german")
+
+# Accept a sentence input from the user
+sentence = input("Enter a German sentence: ")
+
+# Tokenize the sentence into words
+words = word_tokenize(sentence)
+
+# Perform stemming for each word in the list
+stemmed_words = [stemmer.stem(word) for word in words]
+
+# Output the original and stemmed words
+print("\nOriginal and Stemmed Words:")
+for original, stemmed in zip(words, stemmed_words):
+    print(f"Original: {original}, Stemmed: {stemmed}")
+
+
+
+
+
+
+
+
+Explanation:
+
+
+
+
+---
+
+## 🔧 **Purpose of the Code**
+This code processes a **German sentence**, breaks it into **words**, and reduces each word to its **root** or **stem** using **Snowball Stemmer**. It shows both the **original** and **stemmed** words side by side.
+
+---
+
+## ✅ **Line-by-Line Code Explanation**
+
+```python
+import nltk
+from nltk.stem import SnowballStemmer
+from nltk.tokenize import word_tokenize
+```
+- `nltk` is a Python library for Natural Language Processing (NLP).
+- `SnowballStemmer` is a stemmer that can handle **multiple languages**.
+- `word_tokenize` breaks a sentence into **individual words**.
+
+---
+
+```python
+# Download necessary NLTK resources
+nltk.download('punkt')
+nltk.download('punkt_tab') # Not typically needed but included here
+```
+- Downloads **Punkt tokenizer** data, required for breaking sentences into words and sentences.
+- `punkt_tab` is **not a common resource**, but listed here (probably by mistake). `punkt` alone is fine.
+
+---
+
+```python
+# Create an instance of the SnowballStemmer for German
+stemmer = SnowballStemmer("german")
+```
+- Creates a **Snowball stemmer** for the **German** language.
+- This object can stem (reduce) German words to their **base forms**.
+
+---
+
+```python
+# Accept a sentence input from the user
+sentence = input("Enter a German sentence: ")
+```
+- Prompts the user to **enter a sentence** in German.
+
+---
+
+```python
+# Tokenize the sentence into words
+words = word_tokenize(sentence)
+```
+- Splits the input sentence into **words/tokens**.
+
+---
+
+```python
+# Perform stemming for each word in the list
+stemmed_words = [stemmer.stem(word) for word in words]
+```
+- Loops through each word and applies **stemming**.
+
+---
+
+```python
+# Output the original and stemmed words
+print("\nOriginal and Stemmed Words:")
+for original, stemmed in zip(words, stemmed_words):
+    print(f"Original: {original}, Stemmed: {stemmed}")
+```
+- Displays each **original** word alongside its **stemmed** version.
+
+---
+
+## 📝 **What is Stemming?**
+- **Stemming** is the process of removing suffixes (or prefixes) from a word to reach its **root or base form**.
+- For example:
+  - English: `"running" → "run"`
+  - German: `"laufen" (to run) → "lauf"`
+
+Stemming helps in **reducing variations** of a word to a common base, which is useful in **search engines**, **text mining**, **NLP tasks**, etc.
+
+---
+
+## ❄️ **What is Snowball Stemmer?**
+- **Snowball Stemmer** is an **improved version** of the **Porter Stemmer**.
+- It’s called "Snowball" because it was developed using a framework named **Snowball**, created by Martin Porter (the same person who made Porter Stemmer).
+- **Supports multiple languages**, including:
+  - English
+  - German
+  - French
+  - Spanish
+  - Russian
+  - And more...
+
+---
+
+## ⚖️ **Difference Between Porter Stemmer and Snowball Stemmer**
+
+| **Aspect**           | **Porter Stemmer**                              | **Snowball Stemmer**                           |
+|----------------------|-------------------------------------------------|------------------------------------------------|
+| **Developer**        | Martin Porter                                   | Martin Porter                                  |
+| **Introduced**       | 1980                                            | 2001                                           |
+| **Languages Supported** | Only **English**                              | **Multiple languages** (German, French, etc.)  |
+| **Algorithm**        | Early, basic rule-based stemming                | Improved, more flexible rule-based stemming    |
+| **Performance**      | Less accurate, older rules                     | More accurate, refined rules                  |
+| **Use Cases**        | Basic English stemming, small NLP tasks         | Modern NLP tasks, multi-language stemming      |
+| **Implementation**   | Simple and fast, but can be **over-aggressive** | More sophisticated and **less aggressive**     |
+
+#### Example (English):
+| **Word**   | **Porter Stemmer** | **Snowball Stemmer** |
+|------------|--------------------|----------------------|
+| **Relational** | relat            | relat               |
+| **Conditional** | condit          | condit              |
+| **Running**    | run              | run                |
+| **Studies**    | studi            | studi              |
+
+---
+
+## 🚀 **Example Code Run**
+```
+Enter a German sentence: Ich laufe gerne im Park.
+```
+
+### Tokenized Words:
+```
+['Ich', 'laufe', 'gerne', 'im', 'Park', '.']
+```
+
+### Stemmed Words:
+```
+['ich', 'lauf', 'gern', 'im', 'park', '.']
+```
+
+### Output:
+```
+Original and Stemmed Words:
+Original: Ich, Stemmed: ich
+Original: laufe, Stemmed: lauf
+Original: gerne, Stemmed: gern
+Original: im, Stemmed: im
+Original: Park, Stemmed: park
+Original: ., Stemmed: .
+```
+
+---
+
+## 🔑 **Summary**
+1. **Snowball Stemmer** is a multilingual and more accurate stemmer than the **Porter Stemmer**.
+2. The code:
+   - Accepts a **German** sentence.
+   - Splits it into **words**.
+   - Applies **stemming** to find the **root** of each word.
+3. Useful in tasks like **text normalization**, **search engines**, **information retrieval**, etc.
+
+---
+
+
+
+
+
